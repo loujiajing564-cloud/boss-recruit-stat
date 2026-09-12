@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <h1>BOSS 人选重复统计 <small>v1.15.5</small></h1>
+    <nav>
+      <button class="tab active" data-tab="current">当前统计</button>
+      <button class="tab" data-tab="recruit">招聘日报</button>
+    </nav>
+
+    <section id="currentTab" data-panel="current">
+      <label>本组同事姓名（用顿号隔开）</label>
+      <textarea id="members" placeholder="请输入同组同事的名字，名字之间用顿号隔开"></textarea>
+      <button id="save" class="light">保存名单</button>
+      <div class="stats">
+        <span>查看<strong id="viewed">0</strong></span>
+        <span>识别<strong id="detected">0</strong></span>
+        <span>已沟通<strong id="duplicates">0</strong></span>
+        <span>失败<strong id="unknown">0</strong></span>
+        <span>重复率<strong id="rate">0.0%</strong></span>
+      </div>
+      <button id="start">开始统计</button>
+      <button id="end" class="red" hidden>结束并生成报告</button>
+      <p id="msg"></p>
+      <section id="box" hidden>
+        <textarea id="report" readonly></textarea>
+        <button id="copy" class="light">复制报告</button>
+      </section>
+      <div class="history-head duplicate-history-head">
+        <strong>查重记录</strong>
+        <button id="clear" class="danger-text">清空全部</button>
+      </div>
+      <div id="historyList"></div>
+      <p id="emptyHistory">暂无查重记录</p>
+    </section>
+
+    <section id="recruitTab" data-panel="recruit" hidden>
+      <details id="dingtalkSettings" class="dingtalk-settings">
+        <summary>钉钉 AI 表格同步设置</summary>
+        <div id="savedDingTalkConfig" class="saved-config" hidden>
+          <strong>✓ Webhook 地址已保存</strong>
+          <span>以后可直接点击记录旁的“同步”，无需再次粘贴。</span>
+          <button id="replaceDingTalk" class="light">更换地址</button>
+        </div>
+        <label id="dingtalkWebhookLabel" for="dingtalkWebhook">自动化工作流 Webhook</label>
+        <input id="dingtalkWebhook" type="password" autocomplete="off" spellcheck="false" placeholder="https://connector.dingtalk.com/webhook/flow/…">
+        <div class="settings-actions">
+          <button id="saveDingTalk" class="light">保存配置</button>
+          <button id="clearDingTalk" class="danger-text" hidden>清除配置</button>
+        </div>
+        <p id="dingtalkConfigMsg" class="status">Webhook 仅保存在本机，不会写入插件源码。</p>
+      </details>
+      <p class="tip">请先人工进入 BOSS“招聘数据—日报”、选择岗位并等待页面加载完成。</p>
+      <button id="readRecruit">读取当前日报</button>
+      <p id="recruitMsg" class="status"></p>
+      <article id="recruitPreview" class="recruit-preview" hidden>
+        <div class="section-title">保存前预览</div>
+        <dl class="context-grid">
+          <div><dt>日期</dt><dd id="recruitDate"></dd></div>
+          <div><dt>岗位</dt><dd id="recruitJob"></dd></div>
+          <div><dt>Base</dt><dd id="recruitBase"></dd></div>
+        </dl>
+        <div class="metric-grid boss-metrics">
+          <span>我看过<strong id="recruitViewedByMe"></strong></span>
+          <span>看过我<strong id="recruitViewedMe"></strong></span>
+          <span>我打招呼<strong id="recruitGreetedByMe"></strong></span>
+          <span>牛人新招呼<strong id="recruitNewGreetings"></strong></span>
+          <span>我沟通<strong id="recruitCommunicatedByMe"></strong></span>
+          <span>收获简历<strong id="recruitResumesReceived"></strong></span>
+          <span>交换联系方式<strong id="recruitContactsExchanged"></strong></span>
+        </div>
+        <div id="duplicateTitle" class="section-title duplicate-title">可合并的重复统计</div>
+        <p id="noDuplicateData" class="empty-inline" hidden>暂无重复统计数据</p>
+        <div id="duplicatePreview" class="metric-grid">
+          <span>浏览人数<strong id="dupViewed"></strong></span>
+          <span>成功识别<strong id="dupDetected"></strong></span>
+          <span>重复人数<strong id="dupDuplicates"></strong></span>
+          <span>识别失败<strong id="dupUnknown"></strong></span>
+          <span>重复率<strong id="dupRate"></strong></span>
+          <span>新鲜率<strong id="freshRate"></strong></span>
+        </div>
+        <p id="recruitWarning" class="warning" hidden></p>
+        <button id="saveRecruit">保存记录</button>
+      </article>
+
+      <div class="history-head recruit-history-head">
+        <strong>招聘日报历史</strong>
+      </div>
+      <div class="daily-table-wrap">
+        <table class="daily-table">
+          <thead><tr><th>日期</th><th>岗位 / Base</th><th>日终数据</th><th>操作</th></tr></thead>
+          <tbody id="recruitHistoryList"></tbody>
+        </table>
+      </div>
+      <p id="emptyRecruitHistory">暂无招聘日报记录</p>
+    </section>
+
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

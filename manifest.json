@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "BOSS 人选重复统计",
+  "version": "1.15.5",
+  "description": "手动统计 BOSS 候选人重复情况、采集招聘日报，并可由用户确认后同步到钉钉 AI 表格。",
+  "permissions": ["storage"],
+  "host_permissions": ["https://*.zhipin.com/*", "https://connector.dingtalk.com/*"],
+  "icons": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "background": { "service_worker": "background.js" },
+  "action": { "default_title": "BOSS 人选重复统计", "default_popup": "popup.html", "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" } },
+  "content_scripts": [{
+    "matches": ["https://*.zhipin.com/*"],
+    "js": ["communication-parser.js", "content.js"],
+    "css": ["overlay.css"],
+    "run_at": "document_idle",
+    "all_frames": true,
+    "match_about_blank": true,
+    "match_origin_as_fallback": true
+  }]
+}
