@@ -1,0 +1,8 @@
+.DS_Store
+*.zip
+*.crx
+*.save
+.env
+.env.*
+*.pem
+*.key
